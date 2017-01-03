@@ -28,8 +28,11 @@ function buildGroundArray(){
       for(var i =0;i<containerW/cellWH;i++){
     	var height = Math.floor(Math.random() * maxHeight)+1;
     		groundArray.push(height);
-        for(var j=0;j<groundArray[i];j++){
+        for(var j= ((containerH/cellWH)-1); j>(((containerH/cellWH)-1) -groundArray[i]); j--){
             divArray[j][i].css("background-image","url('assets/blocks/dirt.png')").attr("colored",true);
+            if(j===(12-groundArray[i])){
+            	divArray[j][i].css("background-image","url('assets/blocks/grass.png')").attr("colored",true);
+            }
         }
     }
 
