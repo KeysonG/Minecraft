@@ -1,22 +1,35 @@
 
-var containerH = 100;
-var containerW = 80;
+var containerH = 600;
+var containerW = 1000;
+var cellWH = 50;
 var groundArray = [];
 var divArray = [];
+
 function createDivMatrix(){
     //createMatrixOfDivsHere
+    for(var i = 0; i<containerH/cellWH; i++){
+    	divArray[i] = Array(containerW/cellWH);
+    	var row = $("<div/>");
+    	row.appendTo($("#game"));
+    		
+    	for(var j = 0; j<containerW/cellWH; j++){
+	    	var cell = divArray[i][j]=$("<div/>");
+	    	cell.addClass("cell");
+	    	cell.data("row", i);
+	    	cell.data("column", j);
+	    	cell.appendTo($(row));
+    	}
+    }
 }
 
 
 function buildGroundArray(){
-
-    var maxHeight = 10;
-    var height = Math.floor(Math.random() * maxHeight)
-    groundArray.push(height);
-
-    for(var i =0;i<groundArray.length;i++){
+    var maxHeight = 4;
+      for(var i =0;i<containerW/cellWH;i++){
+    	var height = Math.floor(Math.random() * maxHeight)+1;
+    		groundArray.push(height);
         for(var j=0;j<groundArray[i];j++){
-            $("#"+i+"-"+j).css("background","url('ground.jpg')").attr("colored",true);
+            divArray[j][i].css("background-image","url('assets/blocks/dirt.png')").attr("colored",true);
         }
     }
 
@@ -32,3 +45,9 @@ function buildTree(){
     var treeStartY = placeTree
 }
 
+function init(){
+	createDivMatrix();
+	buildGroundArray();
+}
+
+init();
