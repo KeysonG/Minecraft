@@ -21,6 +21,7 @@ var cloudHeight =2;
 
 function reset(){
 	$(".landingpage").hide();
+    $("#toolbar").css("display","inline-block");
 	$("body").css("text-align", "left");
 	$("#game").css("border", "1px solid black");
 }
@@ -96,7 +97,7 @@ function placeCloud(){
 		cloudPositionX =  Math.floor(Math.random()*containerW/cellWH);
 		cloudPositionY = Math.floor(Math.random()*10) +2;
 		goodCloud = checkCloud(cloudPositionX,cloudPositionY);
-		
+
 	}
 
 	buildCloud(cloudPositionX, cloudPositionY);
@@ -114,10 +115,11 @@ function generateSky(){
 
 function checkTree(treePositionX,treePositionY){
 	if(treePositionY<=(gameHeight-groundArray[treePositionX-1]) && treePositionY<=(gameHeight-groundArray[treePositionX+1]) ){
-		
+
 		return true;
 	}
 	else{
+		console.log("false");
 		return false;
 	}
 
@@ -164,6 +166,41 @@ function buildCloud(cloudPositionX,cloudPositionY){
 		}
 	}
 }
+
+var Tool = function(name,img,icon) {
+    var that = this;
+    this.name = name;
+    this.icon = icon;
+    this.selectTool = function(){
+        for(var i=0;i<tb.tools.length;i++){
+            if(tb.tools[i].div.hasClass("toolSel")){
+                tb.tools[i].div.removeClass("toolSel");
+            }
+        }
+        that.div.addClass("toolSel");
+        $(document.body).css({'cursor' : "url('"+that.icon+ "'),pointer"});
+
+    };
+    this.img = $("<img>").attr("src", img).addClass("toolImg");
+    this.div = $("<div>").addClass("tool").click(this.selectTool);
+    (this.img).appendTo(this.div);
+    (this.div).appendTo($("#toolbar"));
+
+};
+
+var toolbar = function(){
+    this.tools = [];
+    this.addTools = function(items){
+        for(var i=0;i<items.length;i++){
+            var tool = new Tool(items[i][0],items[i][1],items[i][2]);
+            this.tools.push(tool);
+        }
+    };
+};
+
+var tb = new toolbar();
+tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png"],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png"]]);
+
 function init(){
 	reset();
 	createDivMatrix();
@@ -174,4 +211,11 @@ function init(){
 	placeCloud();
 	generateSky();
 }
+
+// $(window).resize(function(){
+// 	if($(window).width() < 600){
+// 		containerW = 600;
+
+// 	}
+// });
 

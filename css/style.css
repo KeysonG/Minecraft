@@ -1,5 +1,5 @@
-html { 
-  background: url(../assets/backgroundblue.png) no-repeat center center fixed; 
+html {
+  background: url(../assets/backgroundblue.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -21,10 +21,22 @@ img{
 
 }
 
+
+
+
+#container{
+	margin-top:1%;
+	width:auto;
+	height:auto;
+}
+/*************************GAME BOARD CSS *****************************************************/
+
+
 #game{
-		line-height: 0;
-		margin: 0 auto;
-		
+	display:inline-block;
+	line-height: 0;
+	margin-Left: 10%;
+	vertical-align:top;
 
 }
 .cell{
@@ -36,4 +48,43 @@ img{
 .cell:hover{
 	box-sizing: border-box;
 	border: 1px solid white;
+}
+
+
+
+/************************TOOL BAR CSS *********************************************************/
+
+#toolbar{
+	background:darkslategray;
+	margin-right:1%;
+	display:none;
+	height: 550px;
+	width:200px;
+	float:right;
+	padding:2%;
+
+
+}
+
+.tool {
+	height: 90px;
+	width: 90px;
+	border-radius: 20px;
+	border: 2px solid black;
+	background-color: white;
+	margin:auto;
+	display:block;
+	margin-bottom:2%;
+}
+
+.toolSel{
+	background-color:lightblue;
+	border:4px solid black;
+}
+
+.toolImg{
+	display:block;
+	height:70px;
+	width:70px;
+	margin:auto;
 }
