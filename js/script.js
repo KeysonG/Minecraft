@@ -5,6 +5,7 @@ var cellWH = 50;
 var groundArray = [];
 var divArray = [];
 var gameHeight = containerH/cellWH-1;
+var treeHeight = 3;
 
 
 function createDivMatrix(){
@@ -53,13 +54,9 @@ function placeTree(){
     	y = gameHeight-groundArray[x];
     	goodTree = checkTree(x,y);
     }
-    divArray[y][x].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+    buildTree();
     
-    for(var k=y ; k>y-3; k--){
-    	divArray[k][x].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
-    }
-    divArray[k][x].css("background-image","url('assets/blocks/leaf.png')").attr("colored",true);
-
+    
 }
 
 function checkTree(x,y){
@@ -72,6 +69,17 @@ function checkTree(x,y){
 		return false;
 	}
 
+}
+function buildTree(){
+	//first block
+	divArray[y][x].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+    
+    //rest of tree
+    for(var k=y ; k>y-treeHeight; k--){
+    	divArray[k][x].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+    }
+    //leaf
+      divArray[k][x].css("background-image","url('assets/blocks/leaf.gif')").attr("colored",true);
 }
 
 function init(){
