@@ -37,7 +37,7 @@ function createDivMatrix(){
     	row.appendTo($("#game"));
     		
     	for(var j = 0; j<containerW/cellWH; j++){
-	    	var cell = divArray[i][j]=$("<div/>");
+	    	var cell = divArray[i][j]=$("<div/>").on("click",mineOrPlant);
 	    	cell.addClass("cell");
 	    	cell.css("width", cellWH+"px");
 	    	cell.css("height", cellWH+"px");
@@ -56,10 +56,10 @@ function buildGroundArray(){
     	var height = Math.floor(Math.random() * maxHeight)+1;
     		groundArray.push(height);
         for(var j= ((containerH/cellWH)-1); j>(((containerH/cellWH)-1) -groundArray[i]); j--){
-            divArray[j][i].css("background-image","url('assets/blocks/dirt.png')").attr("colored",true);
+            divArray[j][i].addClass("dirt").attr("colored",true);
             
             if(j===(containerH/cellWH-groundArray[i])){
-            	divArray[j][i].css("background-image","url('assets/blocks/grass.png')").attr("colored",true);
+            	divArray[j][i].removeClass("dirt").addClass("dirtGrass").attr("colored",true);
             }
         }
     }
@@ -87,7 +87,7 @@ function placeRock(){
 	goodRock = checkRock(rockPositionX, rockPositionY);
 	}
 	for(var i = rockPositionY; i>rockPositionY-rockAmount; i--){
-	divArray[i][rockPositionX].css("background-image", "url('assets/blocks/rock.png')").attr("colored",true);
+	divArray[i][rockPositionX].addClass("stone").attr("colored",true);
 	}
 }
 
@@ -107,7 +107,7 @@ function generateSky(){
      for(var i = 0; i<containerH/cellWH; i++){
     	for(var j = 0; j<containerW/cellWH; j++){
     		if((divArray[i][j].attr("colored") !=="true")){
-    			divArray[i][j].css("background", "lightblue");
+    			divArray[i][j].addClass("sky");
     		}
     	}
 	}
@@ -126,11 +126,11 @@ function checkTree(treePositionX,treePositionY){
 }
 function buildTrunk(){
 	//first block
-	divArray[treePositionY][treePositionX].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+	divArray[treePositionY][treePositionX].addClass("tree").attr("colored",true);
     
     //rest of tree
     for(var k=treePositionY ; k>treePositionY-trunkHeight; k--){
-    	divArray[k][treePositionX].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+    	divArray[k][treePositionX].addClass("tree").attr("colored",true);
     }
     //leaf
      
@@ -138,7 +138,7 @@ function buildTrunk(){
 function buildBush(){
 	for(var i = treePositionY-trunkHeight; i>treePositionY-trunkHeight-bushHeight;i--){
 		for(var t = treePositionX; t<treePositionX+bushWidth; t++){
-			divArray[i][t-1].css("background-image","url('assets/blocks/leaf.gif')").attr("colored",true);
+			divArray[i][t-1].addClass("treeBush").attr("colored",true);
 		}
 	}
 }
@@ -162,21 +162,58 @@ function checkCloud(cloudPositionX,cloudPositionY){
 function buildCloud(cloudPositionX,cloudPositionY){
 	for(var i = cloudPositionY; i>cloudPositionY-cloudHeight; i--){
 			for(var t = cloudPositionX; t<cloudPositionX+cloudWidth; t++){
-			divArray[i][t].css("background","white").attr("colored",true);
+			divArray[i][t].addClass("cloud").attr("colored",true);
 		}
 	}
 }
 
-var Tool = function(name,img,icon) {
+
+function mineOrPlant(){
+	console.log($(this));
+	if(tb.selectedTool){
+		if(tb.selectedTool.constructor === Tool){
+		if(tb.selectedTool.farms.constructor == Array) {
+
+			for(var i=0;i<tb.selectedTool.farms.length;i++){
+				if($(this).hasClass(tb.selectedTool.farms[i])){
+					$(this).removeClass(tb.selectedTool.farms[i]);
+					$(this).addClass("sky");
+					if(tb.invClasses.indexOf(tb.selectedTool.farms[i])==-1) {
+						tb.addInventoryItem(tb.selectedTool.farms[i]);
+					}
+				}
+			}
+		}
+		else{
+			console.log("im in");
+			if($(this).hasClass(tb.selectedTool.farms)) {
+				$(this).removeClass(tb.selectedTool.farms)
+				$(this).addClass("sky");
+				if(tb.invClasses.indexOf(tb.selectedTool.farms)==-1) {
+					tb.addInventoryItem(tb.selectedTool.farms);
+				}
+			}
+		}
+	}
+	else{
+		if($(this).hasClass("sky")){
+			$(this).addClass(tb.selectedTool.attr("class")).removeClass("sky invItem itemSelected");
+		}
+	}
+	}
+
+}
+
+
+
+var Tool = function(name,img,icon,farms) {
     var that = this;
     this.name = name;
     this.icon = icon;
+	this.farms = farms;
     this.selectTool = function(){
-        for(var i=0;i<tb.tools.length;i++){
-            if(tb.tools[i].div.hasClass("toolSel")){
-                tb.tools[i].div.removeClass("toolSel");
-            }
-        }
+		tb.removeSelected();
+        tb.selectedTool = that;
         that.div.addClass("toolSel");
         $(document.body).css({'cursor' : "url('"+that.icon+ "'),pointer"});
 
@@ -190,16 +227,51 @@ var Tool = function(name,img,icon) {
 
 var toolbar = function(){
     this.tools = [];
+	this.selectedTool;
+	this.invDiv;
+	this.invItems = [];
+	this.invClasses = [];
+	var that = this;
     this.addTools = function(items){
         for(var i=0;i<items.length;i++){
-            var tool = new Tool(items[i][0],items[i][1],items[i][2]);
+            var tool = new Tool(items[i][0],items[i][1],items[i][2],items[i][3]);
             this.tools.push(tool);
         }
+		this.invDiv = $("<div>").addClass("invDiv").appendTo("#toolbar");
     };
+
+    this.addInventoryItem = function(type){
+		console.log("added" + type);
+		this.invItems.push($("<div>").addClass(type).addClass("invItem").on("click",this.selectItem).appendTo(this.invDiv));
+		this.invClasses.push(type);
+	};
+	this.removeSelected = function(){
+		for(var i=0;i<this.tools.length;i++){
+			if(this.tools[i].div.hasClass("toolSel")){
+				this.tools[i].div.removeClass("toolSel");
+			}
+		}
+		for(var i=0;i<this.invItems.length;i++){
+			if(this.invItems[i].hasClass("itemSelected")){
+				this.invItems[i].removeClass("itemSelected");
+			}
+		}
+
+	};
+	this.selectItem = function(){
+		that.removeSelected();
+		$(this).addClass("itemSelected");
+		tb.selectedTool= $(this);
+		$("body").css("cursor",tb.selectedTool.css("background-image")+",pointer");
+	};
+
 };
 
+
+
+
 var tb = new toolbar();
-tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png"],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png"]]);
+tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
 
 function init(){
 	reset();

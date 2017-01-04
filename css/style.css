@@ -1,21 +1,21 @@
 html {
-  background: url(../assets/backgroundblue.png) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    background: url(../assets/backgroundblue.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 body{
-	margin: 0;
+    margin: 0;
 
 }
 .landingpage{
-	text-align: center;
+    text-align: center;
 }
 img{
-	width: 1000px;
-	/*	margin: 0 auto;
-		margin-top: 100px;*/
+    width: 1000px;
+    /*	margin: 0 auto;
+        margin-top: 100px;*/
 }
 .landigpage button{
 
@@ -25,66 +25,117 @@ img{
 
 
 #container{
-	margin-top:1%;
-	width:auto;
-	height:auto;
+    margin-top:1%;
+    width:auto;
+    height:auto;
 }
 /*************************GAME BOARD CSS *****************************************************/
 
 
 #game{
-	display:inline-block;
-	line-height: 0;
-	margin-Left: 10%;
-	vertical-align:top;
+    display:inline-block;
+    line-height: 0;
+    margin-Left: 10%;
+    vertical-align:top;
 
 }
 .cell{
 
-	background:black;
-	display: inline-block;
-	background-size: 100%;
+    background:black;
+    display: inline-block;
+    background-size: 100%;
 }
 .cell:hover{
-	box-sizing: border-box;
-	border: 1px solid white;
+    box-sizing: border-box;
+    border: 1px solid white;
 }
 
 
+.cloud{
+    background:white;
+}
+
+.sky{
+    background:lightblue;
+}
+
+
+.dirt{
+    background-image: url('../assets/blocks/dirt.jpg')
+}
+
+.dirtGrass{
+    background-image: url('../assets/blocks/grass.jpg')
+}
+
+
+.stone{
+    background-image:url('../assets/blocks/rock.jpg')
+}
+
+.tree{
+    background-image:url('../assets/blocks/tree.jpg')
+}
+
+.treeBush{
+    background-image:url('../assets/blocks/leaf.gif')
+}
 
 /************************TOOL BAR CSS *********************************************************/
 
 #toolbar{
-	background:darkslategray;
-	margin-right:1%;
-	display:none;
-	height: 550px;
-	width:200px;
-	float:right;
-	padding:2%;
+    background:darkslategray;
+    margin-right:1%;
+    display:none;
+    height: 550px;
+    width:200px;
+    float:right;
+    padding:2%;
 
 
 }
 
 .tool {
-	height: 90px;
-	width: 90px;
-	border-radius: 20px;
-	border: 2px solid black;
-	background-color: white;
-	margin:auto;
-	display:block;
-	margin-bottom:2%;
+    height: 90px;
+    width: 90px;
+    border-radius: 20px;
+    border: 2px solid black;
+    background-color: white;
+    margin:auto;
+    display:block;
+    margin-bottom:2%;
 }
 
 .toolSel{
-	background-color:lightblue;
-	border:4px solid black;
+    background-color:lightblue;
+    border:4px solid black;
 }
 
 .toolImg{
-	display:block;
-	height:70px;
-	width:70px;
-	margin:auto;
+    display:block;
+    height:70px;
+    width:70px;
+    margin:auto;
+}
+
+
+.invDiv{
+    width:200px;
+    margin:auto;
+    margin-top:15px;
+    padding-left:25px;
+    height:250px;
+    border:3px solid black;
+}
+
+.invItem{
+    height:70px;
+    width:70px;
+    display:inline-block;
+    margin:5px;
+    background-size:100%;
+}
+
+.itemSelected{
+    border:3px solid black;
 }
