@@ -225,6 +225,12 @@ var Tool = function(name,img,icon,farms) {
 
 };
 
+var InventoryItem = function(image){
+	this.counter = 0;
+	this.image = image;
+}
+
+
 var toolbar = function(){
     this.tools = [];
 	this.selectedTool;
