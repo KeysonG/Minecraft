@@ -155,8 +155,16 @@ button:hover{
     display:inline-block;
     margin:5px;
     background-size:100%;
+    text-align:center;
 }
 
 .itemSelected{
     border:3px solid black;
+}
+
+.invText{
+line-height:80px;
+    color:white;
+    font-size:30px;
+    font-weight:bold;
 }

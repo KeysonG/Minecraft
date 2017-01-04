@@ -173,7 +173,6 @@ function buildCloud(cloudPositionX,cloudPositionY){
 
 
 function mineOrPlant(){
-	console.log($(this));
 	if(tb.selectedTool){
 		if(tb.selectedTool.constructor === Tool){
 		if(tb.selectedTool.farms.constructor == Array) {
@@ -182,28 +181,53 @@ function mineOrPlant(){
 				if($(this).hasClass(tb.selectedTool.farms[i])){
 					$(this).removeClass(tb.selectedTool.farms[i]);
 					$(this).addClass("sky");
-					if(tb.invClasses.indexOf(tb.selectedTool.farms[i])==-1) {
+
+
+					if(tb.invClasses.indexOf(tb.selectedTool.farms[i])==-1){
 						tb.addInventoryItem(tb.selectedTool.farms[i]);
+					}
+					else{
+						var inventoryItem = tb.returnInventoryItemByType(tb.selectedTool.farms[i]);
+						inventoryItem.counter++;
+						inventoryItem.span.text(inventoryItem.counter);
+
 					}
 				}
 			}
 		}
 		else{
-			console.log("im in");
 			if($(this).hasClass(tb.selectedTool.farms)) {
 				$(this).removeClass(tb.selectedTool.farms)
 				$(this).addClass("sky");
+
 				if(tb.invClasses.indexOf(tb.selectedTool.farms)==-1) {
 					tb.addInventoryItem(tb.selectedTool.farms);
 				}
+				else{
+					var inventoryItem = tb.returnInventoryItemByType(tb.selectedTool.farms);
+					inventoryItem.counter++;
+					inventoryItem.span.text(inventoryItem.counter);
+				}
 			}
 		}
+
+
 	}
 	else{
 		if($(this).hasClass("sky")){
-			$(this).addClass(tb.selectedTool.attr("class")).removeClass("sky invItem itemSelected");
+
+			tb.selectedTool.counter--;
+
+				$(this).addClass(tb.selectedTool.item.attr("class")).removeClass("sky invItem itemSelected");
+				tb.selectedTool.span.text(tb.selectedTool.counter);
+
+			if(tb.selectedTool.counter==0) {
+				tb.removeInventoryItem(tb.selectedTool);
+			}
 		}
 	}
+
+
 	}
 
 }
@@ -229,10 +253,22 @@ var Tool = function(name,img,icon,farms) {
 
 };
 
-var InventoryItem = function(image){
-	this.counter = 0;
-	this.image = image;
-}
+var InventoryItem = function(type,item){
+	var that = this;
+	this.counter = 1;
+	this.type = type;
+	this.item = item;
+	this.span = $("<span>").text(1).addClass("invText").appendTo(item);
+	this.selectItem = function(e){
+
+		tb.removeSelected();
+		$(e.target).addClass("itemSelected");
+		tb.selectedTool= that;
+		$("body").css("cursor",that.item.css("background-image")+",pointer");
+	};
+	this.item.click(this.selectItem);
+
+};
 
 
 var toolbar = function(){
@@ -251,8 +287,9 @@ var toolbar = function(){
     };
 
     this.addInventoryItem = function(type){
-		console.log("added" + type);
-		this.invItems.push($("<div>").addClass(type).addClass("invItem").on("click",this.selectItem).appendTo(this.invDiv));
+		var item = $("<div>").addClass(type).addClass("invItem").attr("id",type);
+		item.appendTo(this.invDiv);
+		this.invItems.push(new InventoryItem(type,item));
 		this.invClasses.push(type);
 	};
 	this.removeSelected = function(){
@@ -262,19 +299,37 @@ var toolbar = function(){
 			}
 		}
 		for(var i=0;i<this.invItems.length;i++){
-			if(this.invItems[i].hasClass("itemSelected")){
-				this.invItems[i].removeClass("itemSelected");
+			if(this.invItems[i].item.hasClass("itemSelected")){
+				this.invItems[i].item.removeClass("itemSelected");
 			}
 		}
 
 	};
-	this.selectItem = function(){
-		that.removeSelected();
-		$(this).addClass("itemSelected");
-		tb.selectedTool= $(this);
-		$("body").css("cursor",tb.selectedTool.css("background-image")+",pointer");
+
+	this.returnInventoryItemByType = function(type){
+		for(var i=0;i<this.invItems.length;i++){
+			if (this.invItems[i].type === type){
+				return this.invItems[i];
+			}
+		}
 	};
 
+	this.removeInventoryItem= function(item){
+		this.selectedTool = null;
+		$("body").css("cursor","auto");
+		$("#"+item.type).remove();
+		this.removeInvItemsByType(item.type);
+		console.log(this.invItems);
+	};
+
+	this.removeInvItemsByType = function(type){
+		for(var i=0;i<this.invItems.length;i++){
+			if (this.invItems[i].type === type){
+				this.invItems.splice(i,1);
+				this.invClasses.splice(i,1);
+			}
+		}
+	}
 };
 
 
