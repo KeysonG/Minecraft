@@ -25,7 +25,9 @@ function reset(){
     $("#container").css("text-align", "left");
 	$("body").css("text-align", "left");
 	$("#game").css("border", "1px solid black");
-	$("#newGame").show();
+	$("#newGame").show();	
+	groundArray = [];
+
 }
 
 function createDivMatrix(){
