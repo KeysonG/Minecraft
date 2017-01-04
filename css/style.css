@@ -21,21 +21,32 @@ img{
 
 }
 
-
+#newGame{
+	display: none;
+}
 
 
 #container{
     margin-top:1%;
     width:auto;
     height:auto;
+
+	margin: 0 auto;
+	margin-top:1%;
+	width:1300px;
+	height:auto;
+	text-align: center;
+
+
 }
 /*************************GAME BOARD CSS *****************************************************/
 
 
 #game{
+
     display:inline-block;
     line-height: 0;
-    margin-Left: 10%;
+    margin-left: 10%;
     vertical-align:top;
 
 }
@@ -91,7 +102,6 @@ img{
     width:200px;
     float:right;
     padding:2%;
-
 
 }
 

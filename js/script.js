@@ -22,8 +22,10 @@ var cloudHeight =2;
 function reset(){
 	$(".landingpage").hide();
     $("#toolbar").css("display","inline-block");
+    $("#container").css("text-align", "left");
 	$("body").css("text-align", "left");
 	$("#game").css("border", "1px solid black");
+	$("#newGame").show();
 }
 
 function createDivMatrix(){
@@ -289,7 +291,10 @@ function init(){
 	placeCloud();
 	generateSky();
 }
-
+function newGame(){
+	$("#game").html("");
+	init();
+}
 // $(window).resize(function(){
 // 	if($(window).width() < 600){
 // 		containerW = 600;
