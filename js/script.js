@@ -5,8 +5,25 @@ var cellWH = 50;
 var groundArray = [];
 var divArray = [];
 var gameHeight = containerH/cellWH-1;
-var treeHeight = 2;
+var gameWidth = containerW/cellWH-1;
+var treePositionX;
+var treePositionY;
+var trunkHeight = 2;
+var bushHeight = 3;
+var bushWidth = 3;
+var rockPositionX;
+var rockPositionY;
+var rockAmount = 2;
+var cloudPositionX;
+var cloudPositionY;
+var cloudWidth =3;
+var cloudHeight =2;
 
+function reset(){
+	$(".landingpage").hide();
+	$("body").css("text-align", "left");
+	$("#game").css("border", "1px solid black");
+}
 
 function createDivMatrix(){
     //createMatrixOfDivsHere
@@ -26,6 +43,7 @@ function createDivMatrix(){
 	    	cell.data("row", i);
 	    	cell.data("column", j);
 	    	cell.appendTo($(row));
+
     	}
     }
 }
@@ -49,54 +67,111 @@ function buildGroundArray(){
 
 function placeTree(){
 	var goodTree = false;
+
     while(!goodTree){
-    	x = Math.floor(Math.random()*containerW/cellWH);
-    	y = gameHeight-groundArray[x];
-    	goodTree = checkTree(x,y);
+    	treePositionX = Math.floor(Math.random()*containerW/cellWH);
+    	treePositionY = gameHeight-groundArray[treePositionX];
+    	goodTree = checkTree(treePositionX,treePositionY);
     }
     buildTrunk();
     buildBush();
     
 }
 
-function checkTree(x,y){
-	if(y<=(gameHeight-groundArray[x-1]) && y<=(gameHeight-groundArray[x+1]) ){
-		console.log("true");
+function placeRock(){
+	var goodRock = false;
+	while(!goodRock){
+	rockPositionX = Math.floor(Math.random()*containerW/cellWH);
+	rockPositionY = gameHeight-groundArray[rockPositionX];
+	goodRock = checkRock(rockPositionX, rockPositionY);
+	}
+	for(var i = rockPositionY; i>rockPositionY-rockAmount; i--){
+	divArray[i][rockPositionX].css("background-image", "url('assets/blocks/rock.png')").attr("colored",true);
+	}
+}
+
+function placeCloud(){
+	var goodCloud = false;
+	while(!goodCloud){
+		cloudPositionX =  Math.floor(Math.random()*containerW/cellWH);
+		cloudPositionY = Math.floor(Math.random()*10) +2;
+		goodCloud = checkCloud(cloudPositionX,cloudPositionY);
+		
+	}
+
+	buildCloud(cloudPositionX, cloudPositionY);
+}
+
+function generateSky(){
+     for(var i = 0; i<containerH/cellWH; i++){
+    	for(var j = 0; j<containerW/cellWH; j++){
+    		if((divArray[i][j].attr("colored") !=="true")){
+    			divArray[i][j].css("background", "lightblue");
+    		}
+    	}
+	}
+}
+
+function checkTree(treePositionX,treePositionY){
+	if(treePositionY<=(gameHeight-groundArray[treePositionX-1]) && treePositionY<=(gameHeight-groundArray[treePositionX+1]) ){
+		
 		return true;
 	}
 	else{
-		console.log("false");
 		return false;
 	}
 
 }
 function buildTrunk(){
 	//first block
-	divArray[y][x].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+	divArray[treePositionY][treePositionX].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
     
     //rest of tree
-    for(var k=y ; k>y-treeHeight; k--){
-    	divArray[k][x].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
+    for(var k=treePositionY ; k>treePositionY-trunkHeight; k--){
+    	divArray[k][treePositionX].css("background-image","url('assets/blocks/tree.png')").attr("colored",true);
     }
     //leaf
      
 }
 function buildBush(){
-	for(var i = y-treeHeight; i>treeHeight-1;i--)
-	 divArray[i][x].css("background-image","url('assets/blocks/leaf.gif')").attr("colored",true);
+	for(var i = treePositionY-trunkHeight; i>treePositionY-trunkHeight-bushHeight;i--){
+		for(var t = treePositionX; t<treePositionX+bushWidth; t++){
+			divArray[i][t-1].css("background-image","url('assets/blocks/leaf.gif')").attr("colored",true);
+		}
+	}
 }
 
+function checkRock(){
+	if(rockPositionX === treePositionX){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+function checkCloud(cloudPositionX,cloudPositionY){
+	if(cloudPositionY >= (treePositionY-trunkHeight-bushHeight) || cloudPositionX+cloudWidth<=1 || cloudPositionX+cloudWidth+1>=gameWidth){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+function buildCloud(cloudPositionX,cloudPositionY){
+	for(var i = cloudPositionY; i>cloudPositionY-cloudHeight; i--){
+			for(var t = cloudPositionX; t<cloudPositionX+cloudWidth; t++){
+			divArray[i][t].css("background","white").attr("colored",true);
+		}
+	}
+}
 function init(){
+	reset();
 	createDivMatrix();
 	buildGroundArray();
 	placeTree();
+	placeRock();
+	placeCloud();
+	placeCloud();
+	generateSky();
 }
 
-// $(window).resize(function(){
-// 	if($(window).width() < 600){
-// 		containerW = 600;
-
-// 	}
-// });
-
-init();
