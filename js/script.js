@@ -1,7 +1,7 @@
 
 var containerH = 600;
 var containerW = 1000;
-var cellWH = 20;
+var cellWH = 50;
 var groundArray = [];
 var divArray = [];
 var gameHeight = containerH/cellWH-1;
@@ -18,15 +18,23 @@ var cloudPositionX;
 var cloudPositionY;
 var cloudWidth =3;
 var cloudHeight =2;
-var groundMaxHeight = 20;
+var groundMaxHeight = 4;
 var noise;
 var audio;
+var enterSound;
+var placeSound;
+var mineSound;
 
 function landinpage(){
 	$("div.glitch").click(init);
+	// $("div.glitch").click(function(){
+	// })
 	audio = new Audio('assets/sound.mp3');
 	audio.play();
 	noise = new Audio('assets/noise.mp3');
+	enterSound = new Audio('assets/enter.mp3');
+	placeSound = new Audio('assets/place.mp3');
+	mineSound = new Audio('assets/mine.mp3')
 
 	$(".glitch").hover(function(){
 		noise.play();
@@ -204,6 +212,7 @@ function mineOrPlant(){
 					}
 					else{
 					$(this).addClass("sky");
+					mineSound.play();
 				}
 
 					if(tb.invClasses.indexOf(tb.selectedTool.farms[i])==-1){
@@ -243,6 +252,7 @@ function mineOrPlant(){
 
 				$(this).addClass(tb.selectedTool.item.attr("class")).removeClass("sky invItem itemSelected");
 				tb.selectedTool.span.text(tb.selectedTool.counter);
+				placeSound.play();
 
 			if(tb.selectedTool.counter==0) {
 				tb.removeInventoryItem(tb.selectedTool);
@@ -365,6 +375,8 @@ tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","
 function reset(){
 	noise.pause();
 	audio.pause();
+	enterSound.play();
+
 	$(".landingpage").slideUp(1000);
     $("#toolbar").css("display","inline-block");
     $("#container").css("text-align", "left");
