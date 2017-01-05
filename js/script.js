@@ -10,7 +10,7 @@ var treePositionX;
 var treePositionY;
 var trunkHeight = 2;
 var bushHeight = 3;
-var bushWidth = 3;
+var bushWidth = 3; //have to have number divisible by 3
 var rockPositionX;
 var rockPositionY;
 var rockAmount = 2;
@@ -19,16 +19,18 @@ var cloudPositionY;
 var cloudWidth =3;
 var cloudHeight =2;
 var groundMaxHeight = 20;
+var noise;
+var audio;
 
-function reset(){
-	$(".landingpage").hide();
-    $("#toolbar").css("display","inline-block");
-    $("#container").css("text-align", "left");
-	$("body").css("text-align", "left");
-	$("#game").css("border", "1px solid black");
-	$("#newGame").show();	
-	groundArray = [];
+function landinpage(){
+	$("div.glitch").click(init);
+	audio = new Audio('assets/sound.mp3');
+	audio.play();
+	noise = new Audio('assets/noise.mp3');
 
+	$(".glitch").hover(function(){
+		noise.play();
+	},function(){noise.pause();});
 }
 
 function createDivMatrix(){
@@ -56,7 +58,6 @@ function createDivMatrix(){
 
 
 function buildGroundArray(){
-
       for(var i =0;i<containerW/cellWH;i++){
     	var height = Math.floor(Math.random() * groundMaxHeight)+1;
     		groundArray.push(height);
@@ -129,6 +130,14 @@ function generateSky(){
     	}
 	}
 }
+function placeExtra(type){
+	x = Math.floor(Math.random()*containerW/cellWH);
+	y = Math.floor(Math.random()* groundArray[x]);
+
+	divArray[gameHeight-y][x].attr(type, true);
+	console.log(x,y);
+
+}
 
 function checkTree(treePositionX,treePositionY){
 	if(treePositionY<=(gameHeight-groundArray[treePositionX-1]) && treePositionY<=(gameHeight-groundArray[treePositionX+1]) ){
@@ -147,6 +156,7 @@ function buildTrunk(){
     
     //rest of tree
     for(var k=treePositionY ; k>treePositionY-trunkHeight; k--){
+
     	divArray[k][treePositionX].addClass("tree").attr("colored",true);
     }
     //leaf
@@ -186,8 +196,15 @@ function mineOrPlant(){
 			for(var i=0;i<tb.selectedTool.farms.length;i++){
 				if($(this).hasClass(tb.selectedTool.farms[i])){
 					$(this).removeClass(tb.selectedTool.farms[i]);
+					if($(this).attr("gold")){
+						$(this).addClass("gold");
+					}
+					else if($(this).attr("dynamite")){
+						$(this).addClass("dynamite");
+					}
+					else{
 					$(this).addClass("sky");
-
+				}
 
 					if(tb.invClasses.indexOf(tb.selectedTool.farms[i])==-1){
 						tb.addInventoryItem(tb.selectedTool.farms[i]);
@@ -203,7 +220,7 @@ function mineOrPlant(){
 		}
 		else{
 			if($(this).hasClass(tb.selectedTool.farms)) {
-				$(this).removeClass(tb.selectedTool.farms)
+				$(this).removeClass(tb.selectedTool.farms);
 				$(this).addClass("sky");
 
 				if(tb.invClasses.indexOf(tb.selectedTool.farms)==-1) {
@@ -335,7 +352,7 @@ var toolbar = function(){
 				this.invClasses.splice(i,1);
 			}
 		}
-	}
+	};
 };
 
 
@@ -343,6 +360,29 @@ var toolbar = function(){
 
 var tb = new toolbar();
 tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
+
+
+function reset(){
+	noise.pause();
+	audio.pause();
+	$(".landingpage").slideUp(1000);
+    $("#toolbar").css("display","inline-block");
+    $("#container").css("text-align", "left");
+	$("body").css("text-align", "left");
+
+
+	$("#game").css("border", "1px solid black");
+	$("#newGame").show();
+	setTimeout(function(){
+		$("body").css("background", "inherit");
+		$("html").css("background", "url(assets/backgroundblue.png) no-repeat center center fixed");
+	},1000);
+
+	
+	groundArray = [];
+
+}
+landinpage();
 
 function init(){
 	reset();
@@ -353,6 +393,9 @@ function init(){
 	placeCloud();
 	placeCloud();
 	generateSky();
+	placeExtra("gold");
+	placeExtra("dynamite");
+
 }
 function newGame(){
 	$("#game").html("");
@@ -364,4 +407,3 @@ function newGame(){
 
 // 	}
 // });
-
