@@ -206,8 +206,11 @@ function mineOrPlant(){
 					$(this).removeClass(tb.selectedTool.farms[i]);
 					if($(this).attr("gold")){
 						$(this).addClass("gold");
+
 						$("#gold").slideDown();
 						setTimeout(function(){$("#gold").fadeOut()},4000);
+						tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png","assets/tools/diamond_pickaxe.png", "gold"]]);
+
 					}
 					else if($(this).attr("dynamite")){
 						$(this).addClass("dynamite");
@@ -372,7 +375,7 @@ var toolbar = function(){
 
 
 var tb = new toolbar();
-tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]],["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]]]);
+tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
 
 
 function reset(){
