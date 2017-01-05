@@ -25,6 +25,8 @@ var enterSound;
 var placeSound;
 var mineSound;
 var tb;
+
+
 function landinpage(){
 	$("div.glitch").click(init);
 	// $("div.glitch").click(function(){
@@ -34,7 +36,8 @@ function landinpage(){
 	noise = new Audio('assets/noise.mp3');
 	enterSound = new Audio('assets/enter.mp3');
 	placeSound = new Audio('assets/place.mp3');
-	mineSound = new Audio('assets/mine.mp3')
+	mineSound = new Audio('assets/mine.mp3');
+	winSound = new Audio('assets/wingold.mp3');
 
 	$(".glitch").hover(function(){
 		noise.play();
@@ -212,12 +215,19 @@ function mineOrPlant(){
 
 					if($(this).attr("gold")){
 						$(this).addClass("gold");
+
                         if(!tb.isGoldInToolbar()) {
+                        winSound.play();
 						$("#gold").slideDown();
 						setTimeout(function(){$("#gold").fadeOut()},4000);
 
                             tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png", "assets/tools/diamond_pickaxe.png", "gold"]]);
                         }
+
+						winSound.play();
+						$("#gold").slideDown();
+						setTimeout(function(){$("#gold").fadeOut()},4000);
+						
 
 					}
 					else if($(this).attr("dynamite")){
@@ -331,7 +341,7 @@ var toolbar = function(){
 	this.createToolDivs = function(){
 		this.toolDiv = $("<div>").attr("id","toolDiv").appendTo("#toolbar");
         this.invDiv = $("<div>").addClass("invDiv").appendTo("#toolbar");
-	}
+	};
 
     this.addTools = function(items){
 
@@ -396,7 +406,7 @@ var toolbar = function(){
             }
         }
         return false;
-    }
+    };
 };
 
 
