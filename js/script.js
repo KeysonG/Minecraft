@@ -206,10 +206,12 @@ function mineOrPlant(){
 					$(this).removeClass(tb.selectedTool.farms[i]);
 					if($(this).attr("gold")){
 						$(this).addClass("gold");
-
+                        if(!tb.isGoldInToolbar()) {
 						$("#gold").slideDown();
 						setTimeout(function(){$("#gold").fadeOut()},4000);
-						tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png","assets/tools/diamond_pickaxe.png", "gold"]]);
+
+                            tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png", "assets/tools/diamond_pickaxe.png", "gold"]]);
+                        }
 
 					}
 					else if($(this).attr("dynamite")){
@@ -317,8 +319,9 @@ var toolbar = function(){
 	this.invClasses = [];
 	var that = this;
 
-	this.createToolDiv = function(){
+	this.createToolDivs = function(){
 		this.toolDiv = $("<div>").attr("id","toolDiv").appendTo("#toolbar");
+        this.invDiv = $("<div>").addClass("invDiv").appendTo("#toolbar");
 	}
 
     this.addTools = function(items){
@@ -327,7 +330,7 @@ var toolbar = function(){
             var tool = new Tool(items[i][0],items[i][1],items[i][2],items[i][3]);
             this.tools.push(tool);
         }
-		this.invDiv = $("<div>").addClass("invDiv").appendTo("#toolbar");
+
     };
 
     this.addInventoryItem = function(type){
@@ -362,6 +365,9 @@ var toolbar = function(){
 		this.selectedTool = null;
 		$("body").css("cursor","auto");
 		$("#"+item.type).remove();
+        if(item.type=="gold"){
+            $("#"+item.type).remove();
+        }
 		this.removeInvItemsByType(item.type);
 		console.log(this.invItems);
 	};
@@ -374,13 +380,21 @@ var toolbar = function(){
 			}
 		}
 	};
+	this.isGoldInToolbar = function(){
+        for(var i=0;i<this.tools.length;i++){
+            if(this.tools[i].farms === "gold"){
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 
 
 
 var tb = new toolbar();
-tb.createToolDiv();
+tb.createToolDivs();
 tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
 
 
@@ -418,6 +432,9 @@ function init(){
 	placeCloud();
 	generateSky();
 	placeExtra("gold");
+    placeExtra("gold");
+    placeExtra("gold");
+    placeExtra("gold");
 	placeExtra("dynamite");
 
 }
