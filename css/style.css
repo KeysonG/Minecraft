@@ -115,6 +115,7 @@ button:hover{
     height: 550px;
     width:200px;
     padding:2%;
+    cursor:pointer;
 }
 
 .tool {

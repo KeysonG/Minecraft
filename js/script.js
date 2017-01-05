@@ -1,7 +1,7 @@
 
 var containerH = 600;
 var containerW = 1000;
-var cellWH = 50;
+var cellWH = 20;
 var groundArray = [];
 var divArray = [];
 var gameHeight = containerH/cellWH-1;
@@ -18,6 +18,7 @@ var cloudPositionX;
 var cloudPositionY;
 var cloudWidth =3;
 var cloudHeight =2;
+var groundMaxHeight = 20;
 
 function reset(){
 	$(".landingpage").hide();
@@ -55,9 +56,9 @@ function createDivMatrix(){
 
 
 function buildGroundArray(){
-    var maxHeight = 3;
+
       for(var i =0;i<containerW/cellWH;i++){
-    	var height = Math.floor(Math.random() * maxHeight)+1;
+    	var height = Math.floor(Math.random() * groundMaxHeight)+1;
     		groundArray.push(height);
         for(var j= ((containerH/cellWH)-1); j>(((containerH/cellWH)-1) -groundArray[i]); j--){
             divArray[j][i].addClass("dirt").attr("colored",true);
@@ -95,11 +96,23 @@ function placeRock(){
 	}
 }
 
+
+
+function checkCloud(cloudPositionX,cloudPositionY){
+	if(((cloudPositionY >= (treePositionY-trunkHeight-bushHeight)&&!((cloudPositionX+cloudWidth<treePositionX-bushWidth/3) || (cloudPositionX > treePositionX+bushWidth/3))) || cloudPositionX+cloudWidth<=1 || cloudPositionX+cloudWidth+1>=gameWidth)){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+
 function placeCloud(){
 	var goodCloud = false;
 	while(!goodCloud){
 		cloudPositionX =  Math.floor(Math.random()*containerW/cellWH);
-		cloudPositionY = Math.floor(Math.random()*10) +2;
+		cloudPositionY = Math.floor(Math.random()*4) +2;
 		goodCloud = checkCloud(cloudPositionX,cloudPositionY);
 
 	}
@@ -155,14 +168,7 @@ function checkRock(){
 		return true;
 	}
 }
-function checkCloud(cloudPositionX,cloudPositionY){
-	if(cloudPositionY >= (treePositionY-trunkHeight-bushHeight) || cloudPositionX+cloudWidth<=1 || cloudPositionX+cloudWidth+1>=gameWidth){
-		return false;
-	}
-	else{
-		return true;
-	}
-}
+
 function buildCloud(cloudPositionX,cloudPositionY){
 	for(var i = cloudPositionY; i>cloudPositionY-cloudHeight; i--){
 			for(var t = cloudPositionX; t<cloudPositionX+cloudWidth; t++){
