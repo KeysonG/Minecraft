@@ -24,7 +24,7 @@ var audio;
 var enterSound;
 var placeSound;
 var mineSound;
-
+var tb;
 function landinpage(){
 	$("div.glitch").click(init);
 	// $("div.glitch").click(function(){
@@ -138,12 +138,15 @@ function generateSky(){
     	}
 	}
 }
-function placeExtra(type){
-	x = Math.floor(Math.random()*containerW/cellWH);
-	y = Math.floor(Math.random()* groundArray[x]);
+function placeExtra(type,amount){
+    var count = amount || 1;
+    for(var i = 0; i<count;i++) {
+        x = Math.floor(Math.random() * containerW / cellWH);
+        y = Math.floor(Math.random() * groundArray[x]);
 
-	divArray[gameHeight-y][x].attr(type, true);
-	console.log(x,y);
+        divArray[gameHeight - y][x].attr(type, true);
+        console.log(x, y);
+    }
 
 }
 
@@ -204,6 +207,9 @@ function mineOrPlant(){
 			for(var i=0;i<tb.selectedTool.farms.length;i++){
 				if($(this).hasClass(tb.selectedTool.farms[i])){
 					$(this).removeClass(tb.selectedTool.farms[i]);
+
+
+
 					if($(this).attr("gold")){
 						$(this).addClass("gold");
                         if(!tb.isGoldInToolbar()) {
@@ -216,6 +222,9 @@ function mineOrPlant(){
 					}
 					else if($(this).attr("dynamite")){
 						$(this).addClass("dynamite");
+                        setTimeout(function(){$("#gameOver").slideDown()},1000);
+                        setTimeout(function(){$("#gameOver").fadeOut()},4000);
+                        setTimeout(function(){newGame()},5000);
 					}
 					else{
 					$(this).addClass("sky");
@@ -393,9 +402,7 @@ var toolbar = function(){
 
 
 
-var tb = new toolbar();
-tb.createToolDivs();
-tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
+
 
 
 function reset(){
@@ -431,16 +438,20 @@ function init(){
 	placeCloud();
 	placeCloud();
 	generateSky();
-	placeExtra("gold");
-    placeExtra("gold");
-    placeExtra("gold");
-    placeExtra("gold");
+	placeExtra("gold",6);
 	placeExtra("dynamite");
+    tb = new toolbar();
+    tb.createToolDivs();
+    tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
+
 
 }
 function newGame(){
+    $("#toolbar").empty();
 	$("#game").html("");
 	init();
+
+
 }
 // $(window).resize(function(){
 // 	if($(window).width() < 600){

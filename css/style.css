@@ -40,6 +40,12 @@ body{
 
 }
 
+#gameOver{
+    height:200px;
+    width:300px;
+    font-size:60px;
+}
+
 .banner{
     position:absolute;
     left:33%;
