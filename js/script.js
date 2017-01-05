@@ -224,17 +224,44 @@ function mineOrPlant(){
                             tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png", "assets/tools/diamond_pickaxe.png", "gold"]]);
                         }
 
-						winSound.play();
-						$("#gold").slideDown();
-						setTimeout(function(){$("#gold").fadeOut()},4000);
 						
 
 					}
 					else if($(this).attr("dynamite")){
 						$(this).addClass("dynamite");
-                        setTimeout(function(){$("#gameOver").slideDown()},1000);
-                        setTimeout(function(){$("#gameOver").fadeOut()},4000);
-                        setTimeout(function(){newGame()},5000);
+                        var gold =tb.returnInventoryItemByType("gold");
+                        if(gold === null){
+                            counter =0;
+                        }
+                        else {
+                            var counter = gold.counter;
+                        }
+                        if (counter<2)
+                        {
+                            setTimeout(function(){$("#gameOver").slideDown()},1000);
+                            setTimeout(function(){$("#gameOver").fadeOut()},4000);
+                            setTimeout(function(){newGame()},5000);
+                        }
+                        else{
+                            setTimeout(function(){$("#gameOver").text("YOU LOSE 2 GOLD").slideDown()},3000);
+                            var that = this;
+                            setTimeout(function(){
+                                $("#gameOver").fadeOut()
+
+                                $(that).addClass("sky");
+                                $(that).removeClass("dynamite");
+                            },4000);
+                            setTimeout(function(){
+                                $("#gameOver").text("GAME OVER");
+                            },10000);
+                            gold.counter-=2;
+                            gold.span.text(gold.counter);
+                            if(gold.counter == 0){
+                                tb.removeInventoryItem("gold");
+                            }
+
+                        }
+
 					}
 					else{
 					$(this).addClass("sky");
@@ -309,7 +336,12 @@ var Tool = function(name,img,icon,farms) {
     this.div = $("<div>").addClass("tool").click(this.selectTool);
     (this.img).appendTo(this.div);
     (this.div).appendTo($("#toolDiv"));
-
+    if(farms === "gold"){
+        this.div.css("display","none");
+        setTimeout(function() {
+            that.div.fadeIn('slow');
+        },2000)
+    }
 };
 
 var InventoryItem = function(type,item){
