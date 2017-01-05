@@ -282,7 +282,7 @@ var Tool = function(name,img,icon,farms) {
     this.img = $("<img>").attr("src", img).addClass("toolImg");
     this.div = $("<div>").addClass("tool").click(this.selectTool);
     (this.img).appendTo(this.div);
-    (this.div).appendTo($("#toolbar"));
+    (this.div).appendTo($("#toolDiv"));
 
 };
 
@@ -312,6 +312,7 @@ var toolbar = function(){
 	this.invClasses = [];
 	var that = this;
     this.addTools = function(items){
+		this.toolDiv = $("<div>").attr("id","toolDiv").appendTo("#toolbar");
         for(var i=0;i<items.length;i++){
             var tool = new Tool(items[i][0],items[i][1],items[i][2],items[i][3]);
             this.tools.push(tool);
@@ -369,7 +370,7 @@ var toolbar = function(){
 
 
 var tb = new toolbar();
-tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]]]);
+tb.addTools([["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]],["picaxe", "assets/tools/pickaxe.png","assets/tools/pickaxeCurs.png","stone"],["shovel","assets/tools/shovel.png","assets/tools/shovelCurs.png",["dirt","dirtGrass"]],["axe", "assets/tools/axe.png","assets/tools/axeCurs.png",["tree","treeBush"]]]);
 
 
 function reset(){
