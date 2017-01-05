@@ -206,6 +206,8 @@ function mineOrPlant(){
 					$(this).removeClass(tb.selectedTool.farms[i]);
 					if($(this).attr("gold")){
 						$(this).addClass("gold");
+						$("#gold").slideDown();
+						setTimeout(function(){$("#gold").fadeOut()},4000);
 					}
 					else if($(this).attr("dynamite")){
 						$(this).addClass("dynamite");

@@ -24,7 +24,7 @@ body{
 .bannerTool.tool{
     margin-top:5%;
     border:5px solid black;
-    height:200px;
+    height:160px;
     width:200px;
     border-radius:40px;
     background-color:lightblue;
@@ -32,24 +32,25 @@ body{
 }
 
 .minecraftBanner{
-    margin-top:20%;
+    width:100%;
     font-family:'Minecraft';
     text-align:center;
     font-size:50px;
-    color:	#FFD700;
+    color: #ffc106;
 
 }
 
 .banner{
-    display:none;
     position:absolute;
     left:33%;
-    top:40%;
+    top:10%;
     width:500px;
-    height:400px;
-    background-color:white;
+    height:500px;
+    display:none;
+    background-color:rgba(1,1,1,0.8);
+    text-align:center;
+    padding-top:20px;
 }
-
 .landingpage{
     text-align: center;
 
