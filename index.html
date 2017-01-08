@@ -17,7 +17,21 @@
 <div class="landingpage">
 <img src="assets/logo.png" alt=""><br>
         <div class="glitch" data-text="ENTER">ENTER</div> 
+        <div id="loadInst" class="inst">INSTRUCTIONS</div>
+        <div class = "banner" id = "instDiv">
+            <button id ="instButt">X</button>
+            <ol>
+                <li>Select a tool to begin (choose carefully)</li>
+                <li>Dig the ground to find gold</li>
+                <li>Be careful there is also dynamite in the ground</li>
+                <li>If you hit a dynamite you lose 2 gold</li>
+                <li>If you plant 10 elements of any kind you earn 1 piece of gold</li>
+                <li>Once you plant you cant replant!</li>
+                <li>Once you collect all of the gold, you move on to next level!</li>
+                <li>If you hit dynamite and have 1 or less gold remaining, you Lose!</li>
+            </ol>
 
+        </div>
 <!--         <button onclick="init()" >Start Game</button>
  -->
 </div>
@@ -44,7 +58,11 @@
         <div id = "toolbar">
 
         </div>
-        <button id = newGame onclick="newGame()">New Game</button>
+        <div id = "NewGameAndLevel">
+            <button id = "newGame" >New Game</button>
+            <span id = "level"></span>
+            <span id = "goldLeft"></span>
+        </div>
 
 	</div>
 

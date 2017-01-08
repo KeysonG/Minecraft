@@ -16,6 +16,51 @@ body{
     font-family: 'Minecraft';
 
 }
+
+#goldLeft{
+    float:right;
+    margin-right:60px;
+    margin-top:30px;
+}
+
+#instButt{
+    float:right;
+    font-family:'minecraft';
+    font-size:20px;
+    cursor:pointer;
+}
+
+#instDiv{
+    font-size:15px;
+    font-family:'minecraft';
+    background-color: rgba(255, 246, 237,.8);
+    height:300px;
+    line-height:20px;
+    top:30%;
+    left:34%;
+}
+
+
+
+.banner li{
+    text-align:left;
+    margin-top:5px;
+}
+
+#loadInst{
+    font-size:20px;
+}
+
+.inst{
+    font-family:'Minecraft';
+    font-size:25px;
+    color: DarkGoldenRod;
+    cursor: pointer;
+    margin-Left:20px;
+    margin-top:40px;
+}
+
+
 .bannerTool{
     margin:auto;
     display:inline-block;
@@ -88,6 +133,11 @@ button{
 */}
 button:hover{
 		color: DarkGoldenRod;
+}
+
+#newGameAndLevel{
+    height:auto;
+    width:300px;
 }
 
 #newGame{
