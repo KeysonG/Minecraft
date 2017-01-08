@@ -57,7 +57,7 @@ mg.Game = function(){
                                     $("#gold").slideDown();
                                     setTimeout(function(){$("#gold").fadeOut()},4000);
 
-                                    mg.tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png", "assets/tools/diamond_pickaxe.png", "gold"]]);
+                                    mg.tb.addTools([["diamond", "assets/tools/diamond_pickaxe.png", "assets/tools/diamond_pickaxeCurs.png", "gold"]]);
                                 }
                             }
                             else if($(this).attr("dynamite")){
@@ -156,7 +156,7 @@ mg.Game = function(){
 
                         if(mg.tb.selectedTool.type == "gold"){
                             that.goldMined--;
-                            $("#goldLeft").text("Gold Left To Mine: " + (that.gold-that.goldMined))
+                            $("#goldLeft").text("Gold Left To Mine: " + (that.gold-that.goldMined));
                         }
                         else{
 
