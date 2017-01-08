@@ -73,7 +73,7 @@ mg.Game = function(){
                                 {
                                     setTimeout(function(){$("#gameOver").slideDown()},1000);
                                     setTimeout(function(){$("#gameOver").fadeOut()},4000);
-                                    minecraft = new Game();
+                                    minecraft = new mg.Game();
                                     setTimeout(function(){minecraft.newGame()},5000);
 
                                 }
@@ -89,6 +89,7 @@ mg.Game = function(){
                                     },4000);
                                     setTimeout(function(){
                                         $("#gameOver").text("GAME OVER");
+
                                     },10000);
                                     gold.counter-=2;
                                     gold.span.text(gold.counter);
@@ -119,7 +120,7 @@ mg.Game = function(){
                         $(this).addClass("sky");
                         var inventoryItem = mg.tb.returnInventoryItemByType(mg.tb.selectedTool.farms);
                         if(mg.tb.invClasses.indexOf(mg.tb.selectedTool.farms)==-1) {
-                            tb.addInventoryItem(mg.tb.selectedTool.farms);
+                            mg.tb.addInventoryItem(mg.tb.selectedTool.farms);
                             that.goldMined++;
                             $("#goldLeft").text("Gold Left To Mine: " + (that.gold-that.goldMined))
                         }
